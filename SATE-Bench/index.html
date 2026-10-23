@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SATE-Bench: Humans in Space</title>
+  <meta name="description" content="SATE-Bench: an interactive benchmark that evaluates whether multimodal LLMs recognize their own visual uncertainty and actively explore exocentric viewpoints. WACV 2027.">
+  <meta property="og:title" content="SATE-Bench: Can MLLMs Construct Human-Centric Spatial Understanding via Active Exocentric Exploration?">
+  <meta property="og:description" content="316 real-world multi-view scenes, 2,525 multi-turn QA pairs, Active and Passive evaluation, and GRPO training. WACV 2027.">
+  <meta property="og:image" content="static/images/og_teaser.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<!-- Shown only when the stylesheet cannot be loaded (e.g. the file is opened in a viewer that does not load linked files). -->
+<div class="file-warning" style="margin:0;padding:12px 16px;background:#fff4d6;border-bottom:1px solid #e0b84f;font:15px/1.5 sans-serif;color:#5c4400">
+  This page needs to be served over HTTP to load its images and styles. Run
+  <code>python3 -m http.server 8000</code> in the root of the site repository and open <code>http://localhost:8000/SATE-Bench/</code>,
+  or view it on GitHub Pages.
+</div>
+
+<!-- ============================== NAV ============================== -->
+<nav class="topnav" aria-label="Sections">
+  <div class="container topnav-inner">
+    <a class="topnav-brand" href="#top">SATE-Bench</a>
+    <div class="topnav-links">
+      <a href="#overview">Overview</a>
+      <a href="#demo">Demo</a>
+      <a href="#benchmark">Benchmark</a>
+      <a href="#findings">Findings</a>
+      <a href="#results">Results</a>
+      <a href="#grpo">GRPO</a>
+      <a href="#bibtex">BibTeX</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================== HERO ============================== -->
+<header class="hero" id="top">
+  <div class="container">
+    <p class="brand">SATE-Bench</p>
+    <h1 class="title">Humans in Space: Can MLLMs Construct Human-Centric Spatial Understanding via Active Exocentric Exploration?</h1>
+    <p class="venue">WACV 2027</p>
+    <div class="authors">
+      <p class="author-list">
+        <span>Tianchen Guo<sup>1,4</sup></span>
+        <span>Tengyue Zhang<sup>2</sup></span>
+        <span>Chen Liu<sup>3</sup></span>
+        <span>Ling Chen<sup>3</sup></span>
+        <span>Xin Yu<sup>2,4,*</sup></span>
+      </p>
+      <p class="affiliations">
+        <span><sup>1</sup>The University of Queensland</span>
+        <span><sup>2</sup>Australian Institute for Machine Learning, Adelaide University</span>
+        <span><sup>3</sup>University of Technology Sydney</span>
+        <span><sup>4</sup>Follow Me AI Pty Ltd</span>
+      </p>
+      <p class="corresponding"><sup>*</sup>Corresponding author</p>
+    </div>
+    <div class="links">
+      <a class="btn is-disabled" href="#" aria-disabled="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6zM14 3v5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        Paper <small>soon</small></a>
+      <a class="btn" href="https://github.com/gtc-gh/SATE-Bench">
+        <svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        Code</a>
+      <a class="btn is-disabled" href="#" aria-disabled="true"><span aria-hidden="true">🤗</span> Dataset <small>soon</small></a>
+      <a class="btn btn-light" href="#bibtex">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h4v4H7zm0 0c0 4-1 6-3 7m11-7h4v4h-4zm0 0c0 4-1 6-3 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        BibTeX</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================== OVERVIEW ============================== -->
+<section class="section" id="overview">
+  <div class="container">
+    <figure class="figure teaser">
+      <img src="static/images/teaser.webp" width="2000" height="865" alt="Illustration of SATE-Bench. Left: in the Active setting the model starts from an occluded view and moves to adjacent viewpoints until it can answer. Right: in the Passive setting the model receives all relevant views at once.">
+      <figcaption><b>Left (Active):</b> the model starts from a restricted exocentric view in which the key evidence is occluded or out of sight. Instead of guessing, it has to recognize its visual uncertainty and query adjacent viewpoints until it can answer. <b>Right (Passive):</b> the model receives a bag of views that already contains the answer.</figcaption>
+    </figure>
+
+    <ul class="stats" aria-label="Benchmark statistics">
+      <li><b>316</b><span>real-world multi-view scenes</span></li>
+      <li><b>2,525</b><span>multi-turn QA pairs</span></li>
+      <li><b>10</b><span>human-centric tasks</span></li>
+      <li><b>10</b><span>source datasets</span></li>
+      <li><b>4–8</b><span>exocentric views per scene</span></li>
+    </ul>
+
+    <div class="abstract" id="abstract">
+      <h2>Abstract</h2>
+      <p>While Multimodal Large Language Models (MLLMs) excel at zero-shot reasoning, their spatial capabilities are primarily evaluated through static, passive observation. In complex, human-centric environments, severe occlusions frequently obscure critical geometric evidence. Passive evaluations force models to hallucinate missing details rather than explicitly recognizing their own visual uncertainty. To bridge this gap, we introduce <b>SATE-Bench</b>, a novel interactive benchmark evaluating visual self-awareness and active exocentric view-exploration. Comprising 316 real-world scenes and 2,525 multi-turn QA pairs, SATE-Bench utilizes an Active/Passive diagnostic framework. In the Active setting, models start with a severely occluded view and must iteratively query adjacent perspectives to fully “sate” their need for definitive visual evidence, evaluated via a step-penalized reward metric to quantify exploration efficiency. Our comprehensive evaluation of state-of-the-art MLLMs reveals critical deficits: current models underestimate their spatial uncertainty, prematurely terminate exploration, and struggle significantly with fine-grained 3D geometric tasks. Furthermore, we explore eliciting visual self-awareness via Group Relative Policy Optimization (GRPO), demonstrating that while reinforcement learning successfully incentivizes active view-seeking behaviors, the continuous viewpoint-switching exposes bottlenecks in dynamic multi-view fusion. These findings indicate that scaling passive multi-view capabilities does not intrinsically yield active spatial reasoning, highlighting an urgent need for models that intelligently seek out necessary spatial views.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== DEMO ============================== -->
+<section class="section band" id="demo">
+  <div class="container">
+    <p class="eyebrow">Interactive demo</p>
+    <h2>Try the Active Setting Yourself</h2>
+    <p class="lead">You start where the model starts: one view of the scene. Move around the cameras until you are confident, then answer. Every extra view lowers the reward by a factor of e<sup>−0.1</sup>. Try the scene from Figure 1 or one benchmark question for each of the ten tasks, and compare your path with the models'.</p>
+
+    <div class="demo-tabs" role="tablist" aria-label="Example questions" id="demo-tabs"></div>
+
+    <div class="demo">
+      <div class="demo-viewer">
+        <div class="frame">
+          <img id="demo-image" src="" alt="">
+          <span class="frame-badge" id="demo-viewlabel"></span>
+        </div>
+        <div class="controls">
+          <button class="move" id="move-left" type="button" aria-keyshortcuts="ArrowLeft">
+            <span class="key">X</span> ← Move left <small>clockwise</small></button>
+          <svg class="ring" id="demo-ring" width="112" height="112" viewBox="0 0 120 120" role="img" aria-label="Camera layout"></svg>
+          <button class="move" id="move-right" type="button" aria-keyshortcuts="ArrowRight">
+            Move right → <span class="key">Y</span> <small>counter-clockwise</small></button>
+        </div>
+        <p class="meter" id="demo-meter" aria-live="polite"></p>
+      </div>
+
+      <div class="demo-panel">
+        <p class="chip" id="demo-task"></p>
+        <p class="question" id="demo-question"></p>
+        <div class="options" id="demo-options" role="group" aria-label="Answer options"></div>
+        <div class="result" id="demo-result" aria-live="polite" hidden></div>
+        <button class="reset" id="demo-reset" type="button">↺ Restart this example</button>
+      </div>
+    </div>
+    <p class="hint">Tip: use the ← and → keys to move between views.</p>
+  </div>
+</section>
+
+<!-- ============================== BENCHMARK ============================== -->
+<section class="section" id="benchmark">
+  <div class="container">
+    <p class="eyebrow">Benchmark</p>
+    <h2>The SATE-Bench Benchmark</h2>
+    <p class="lead">We source dense, synchronized 360° multi-view captures from ten human-centric datasets, sort the views clockwise around each scene, and annotate challenging multiple-choice questions. For the Active setting, annotators choose an initial view that genuinely requires exploration; for the Passive setting, they choose a subset of views that guarantees the question is answerable. Two independent reviewers cross-validate every item.</p>
+    <figure class="figure">
+      <img src="static/images/pipeline.webp" width="2000" height="1126" loading="lazy" alt="Curation and evaluation pipeline: question design and data collection, annotation and quality control, active exploration, and passive observation.">
+      <figcaption>Curation and evaluation pipeline. Steps 1–2: data collection and human quality control. Step 3: multi-turn Active exploration. Step 4: single-turn Passive observation.</figcaption>
+    </figure>
+
+    <div class="two-col">
+      <div class="panel">
+        <h3>Ten tasks, five cognitive dimensions</h3>
+        <div class="table-wrap">
+          <table class="tasks">
+            <thead><tr><th>Dimension</th><th>Task</th><th class="num"># QA</th></tr></thead>
+            <tbody>
+              <tr><td rowspan="2">Entity Counting</td><td>Human Counting</td><td class="num">308</td></tr>
+              <tr><td>Object Counting</td><td class="num">232</td></tr>
+              <tr><td rowspan="2">Entity Existence</td><td>Human Existence</td><td class="num">203</td></tr>
+              <tr><td>Object Existence</td><td class="num">218</td></tr>
+              <tr><td rowspan="2">Pose &amp; Physical Interaction</td><td>Fine-grained Action and Pose</td><td class="num">301</td></tr>
+              <tr><td>Human-Object Interaction</td><td class="num">165</td></tr>
+              <tr><td rowspan="2">Global Relative Proximity</td><td>Relative Distance to Human</td><td class="num">508</td></tr>
+              <tr><td>Relative Distance to Object</td><td class="num">334</td></tr>
+              <tr><td rowspan="2">View-Conditioned Geometry</td><td>View-Specific Depth Ordering</td><td class="num">124</td></tr>
+              <tr><td>View-Specific Direction</td><td class="num">132</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Two diagnostic settings</h3>
+        <dl class="settings">
+          <dt><span class="pill active">Active</span> 1,615 questions</dt>
+          <dd>One occluded initial view. At each turn the model answers or moves to the adjacent left (X) or right (Y) view, keeping the full history. Scored by accuracy, steps, active rate and the step-penalized reward.</dd>
+          <dt><span class="pill passive">Passive</span> 910 questions</dt>
+          <dd>A bag of annotated views that contains all the evidence. Isolates multi-view fusion from exploration.</dd>
+          <dt>Sources</dt>
+          <dd>M3GYM, Harmony4D, HOI-M3, MvMHAT, core4D, 4D-OR, MM-OR, Replay, EgoHumans and Ego-Exo4D.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <figure class="figure">
+      <img src="static/images/tasks.webp" width="2000" height="1657" loading="lazy" alt="Example questions for all ten tasks, each shown with three synchronized views.">
+      <figcaption>Example questions for the ten tasks.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================== FINDINGS ============================== -->
+<section class="section band" id="findings">
+  <div class="container">
+    <p class="eyebrow">Findings</p>
+    <h2>Key Findings</h2>
+    <div class="cards">
+      <article class="card">
+        <p class="big">69.2 → 56.8</p>
+        <h3>Passive–Active gap</h3>
+        <p>Gemini-3.5-flash fuses static views well (69.2% Passive accuracy) but drops to 56.8% when it has to gather the views itself.</p>
+      </article>
+      <article class="card">
+        <p class="big">2.5 <small>vs.</small> 4.7</p>
+        <h3>Premature termination</h3>
+        <p>Humans explore in 88.1% of the questions and observe 4.7 views on average; the most exploratory model observes only 2.5, and models report high confidence when they stop.</p>
+      </article>
+      <article class="card">
+        <p class="big">31.9%</p>
+        <h3>Geometry breaks down</h3>
+        <p>Entity queries are handled reasonably well, but fine-grained 3D tasks such as Human-Object Interaction collapse, even for the strongest model.</p>
+      </article>
+      <article class="card">
+        <p class="big">0.2% → 72.8%</p>
+        <h3>RL elicits exploration</h3>
+        <p>GRPO turns a model that almost never explores into one that explores most of the time, but stronger exploration rewards lower Active accuracy.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== RESULTS ============================== -->
+<section class="section" id="results">
+  <div class="container">
+    <p class="eyebrow">Results</p>
+    <h2>Main Results</h2>
+    <p class="lead">Average accuracy in the Passive and Active settings, together with the exploration behaviour in the Active setting. Every model loses accuracy when it has to explore on its own.</p>
+    <div class="table-wrap results-wrap">
+      <table class="results">
+        <thead>
+          <tr><th>Model</th><th class="num">Passive Acc (%)</th><th class="num">Active Acc (%)</th><th class="num">Δ</th><th class="num">Avg. Steps</th><th class="num">Active Rate (%)</th></tr>
+        </thead>
+        <tbody>
+          <tr class="ref"><td>Human</td><td class="num">–</td><td class="num">82.7</td><td class="num">–</td><td class="num">4.7</td><td class="num">88.1</td></tr>
+          <tr class="ref"><td>Random Guess</td><td class="num">–</td><td class="num">24.8</td><td class="num">–</td><td class="num">1.0</td><td class="num">0.0</td></tr>
+          <tr class="group"><td colspan="6"><span>Proprietary models</span></td></tr>
+          <tr><td>Gemini-3.5-flash</td><td class="num"><b>69.2</b></td><td class="num"><b>56.8</b></td><td class="num drop">−12.4</td><td class="num">2.5</td><td class="num">80.5</td></tr>
+          <tr><td>Gemini-3.1-flash-lite</td><td class="num">62.6</td><td class="num">38.0</td><td class="num drop">−24.6</td><td class="num">1.5</td><td class="num">24.8</td></tr>
+          <tr><td>Gemini-2.5-flash</td><td class="num">58.5</td><td class="num">45.4</td><td class="num drop">−13.1</td><td class="num">1.9</td><td class="num">41.2</td></tr>
+          <tr><td>Gemini-2.5-flash-lite</td><td class="num">45.1</td><td class="num">28.1</td><td class="num drop">−17.0</td><td class="num">1.6</td><td class="num">20.6</td></tr>
+          <tr><td>GPT-5.2</td><td class="num">63.0</td><td class="num">46.4</td><td class="num drop">−16.6</td><td class="num">1.7</td><td class="num">58.1</td></tr>
+          <tr><td>GPT-5-mini</td><td class="num">64.6</td><td class="num">41.4</td><td class="num drop">−23.2</td><td class="num">1.4</td><td class="num">29.4</td></tr>
+          <tr><td>GPT-5-nano</td><td class="num">55.4</td><td class="num">38.0</td><td class="num drop">−17.4</td><td class="num">1.3</td><td class="num">17.6</td></tr>
+          <tr class="group"><td colspan="6"><span>Open-source models</span></td></tr>
+          <tr><td>Qwen2.5-VL-3B-Instruct</td><td class="num">50.9</td><td class="num">30.4</td><td class="num drop">−20.5</td><td class="num">1.0</td><td class="num">0.2</td></tr>
+          <tr><td>LLaVA-OneVision-7B</td><td class="num">58.9</td><td class="num">36.1</td><td class="num drop">−22.8</td><td class="num">1.0</td><td class="num">0.0</td></tr>
+          <tr><td>Gemma-3-4B-it</td><td class="num">40.2</td><td class="num">31.0</td><td class="num drop">−9.2</td><td class="num">1.1</td><td class="num">3.3</td></tr>
+          <tr><td>Qwen3-VL-8B-Instruct</td><td class="num">55.6</td><td class="num">30.7</td><td class="num drop">−24.9</td><td class="num">1.6</td><td class="num">15.6</td></tr>
+          <tr><td>Qwen3-VL-8B-Thinking</td><td class="num">57.7</td><td class="num">29.8</td><td class="num drop">−27.9</td><td class="num">1.1</td><td class="num">5.8</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">Δ = Active − Passive accuracy. Bold marks the best model in each setting. Per-task results are reported in the paper.</p>
+  </div>
+</section>
+
+<!-- ============================== GRPO ============================== -->
+<section class="section band" id="grpo">
+  <div class="container">
+    <p class="eyebrow">Training</p>
+    <h2>Can MLLMs Learn to Explore?</h2>
+    <p class="lead">We fine-tune Qwen2.5-VL-3B-Instruct with Group Relative Policy Optimization on 19.3K single-view samples (a 1:1 mix of Active and Passive decisions) from M3GYM and Ego-Exo4D training scenes. The reward combines accuracy, format and an action term that encourages exploration.</p>
+    <figure class="figure wide">
+      <div class="scroll-x"><img src="static/images/grpo.webp" width="2400" height="518" loading="lazy" alt="Effect of the action reward weight during GRPO fine-tuning on accuracy, average steps, reward and active rate."></div>
+      <figcaption>Increasing the action reward weight sharply raises the number of steps and the active rate, while Active accuracy and reward decline. Passive accuracy stays stable at about 51%.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================== BIBTEX ============================== -->
+<section class="section" id="bibtex">
+  <div class="container narrow">
+    <h2>BibTeX</h2>
+    <div class="bibtex">
+      <button type="button" class="copy" id="copy-bibtex">Copy</button>
+<pre id="bibtex-text">@inproceedings{satebench2027,
+  title     = {Humans in Space: Can MLLMs Construct Human-Centric Spatial Understanding via Active Exocentric Exploration?},
+  author    = {Guo, Tianchen and Zhang, Tengyue and Liu, Chen and Chen, Ling and Yu, Xin},
+  booktitle = {Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
+  year      = {2027}
+}</pre>
+    </div>
+
+    <h2 class="ack-title" id="acknowledgements">Acknowledgements</h2>
+    <p class="ack">SATE-Bench is built on
+      <a href="https://finalyou.github.io/M3GYM/">M3GYM</a>,
+      <a href="https://jyuntins.github.io/harmony4d/">Harmony4D</a>,
+      <a href="https://juzezhang.github.io/HOIM3_ProjectPage/">HOI-M3</a>,
+      <a href="https://github.com/realgump/MvMHAT">MvMHAT</a>,
+      <a href="https://github.com/leolyliu/CORE4D-Instructions">core4D</a>,
+      <a href="https://github.com/egeozsoy/4D-OR">4D-OR</a>,
+      <a href="https://github.com/egeozsoy/MM-OR">MM-OR</a>,
+      <a href="https://github.com/facebookresearch/replay_dataset">Replay</a>,
+      <a href="https://rawalkhirodkar.github.io/egohumans/">EgoHumans</a> and
+      <a href="https://ego-exo4d-data.org/">Ego-Exo4D</a>.
+      We thank their authors for making the data available. Images shown on this page come from these datasets and remain subject to their original licenses.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <span>SATE-Bench · WACV 2027</span>
+    <a href="https://github.com/gtc-gh/SATE-Bench">Code on GitHub</a>
+    <a href="#top">Back to top ↑</a>
+  </div>
+</footer>
+
+<script src="static/js/demo_data.js"></script>
+<script src="static/js/main.js"></script>
+</body>
+</html>
