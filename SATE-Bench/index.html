@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/style.css">
+  <link rel="stylesheet" href="static/css/style.css?v=20261026e">
 </head>
 <body>
 
@@ -32,8 +32,9 @@
       <a href="#overview">Overview</a>
       <a href="#demo">Demo</a>
       <a href="#benchmark">Benchmark</a>
-      <a href="#findings">Findings</a>
       <a href="#results">Results</a>
+      <a href="#findings">Findings</a>
+      <a href="#failures">Failures</a>
       <a href="#grpo">GRPO</a>
       <a href="#bibtex">BibTeX</a>
     </div>
@@ -43,7 +44,6 @@
 <!-- ============================== HERO ============================== -->
 <header class="hero" id="top">
   <div class="container">
-    <p class="brand">SATE-Bench</p>
     <h1 class="title">Humans in Space: Can MLLMs Construct Human-Centric Spatial Understanding via Active Exocentric Exploration?</h1>
     <p class="venue">WACV 2027</p>
     <div class="authors">
@@ -58,7 +58,7 @@
         <span><sup>1</sup>The University of Queensland</span>
         <span><sup>2</sup>Australian Institute for Machine Learning, Adelaide University</span>
         <span><sup>3</sup>University of Technology Sydney</span>
-        <span><sup>4</sup>Follow Me AI Pty Ltd</span>
+        <span><sup>4</sup>Follow Me AI Pty LTD</span>
       </p>
       <p class="corresponding"><sup>*</sup>Corresponding author</p>
     </div>
@@ -70,9 +70,9 @@
         <svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
         Code</a>
       <a class="btn is-disabled" href="#" aria-disabled="true"><span aria-hidden="true">🤗</span> Dataset <small>soon</small></a>
-      <a class="btn btn-light" href="#bibtex">
+      <a class="btn is-disabled" href="#" aria-disabled="true">
         <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h4v4H7zm0 0c0 4-1 6-3 7m11-7h4v4h-4zm0 0c0 4-1 6-3 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        BibTeX</a>
+        BibTeX <small>soon</small></a>
     </div>
   </div>
 </header>
@@ -84,7 +84,10 @@
   <div class="container">
     <figure class="figure teaser">
       <img src="static/images/teaser.webp" width="2000" height="865" alt="Illustration of SATE-Bench. Left: in the Active setting the model starts from an occluded view and moves to adjacent viewpoints until it can answer. Right: in the Passive setting the model receives all relevant views at once.">
-      <figcaption><b>Left (Active):</b> the model starts from a restricted exocentric view in which the key evidence is occluded or out of sight. Instead of guessing, it has to recognize its visual uncertainty and query adjacent viewpoints until it can answer. <b>Right (Passive):</b> the model receives a bag of views that already contains the answer.</figcaption>
+      <figcaption>
+        <span class="cap-line"><b>Left (Active):</b> the model starts from a restricted exocentric view in which the key evidence is occluded or out of sight. Instead of guessing, it has to recognize its visual uncertainty and query adjacent viewpoints until it can answer.</span>
+        <span class="cap-line"><b>Right (Passive):</b> the model receives all the relevant views at once, which tests multi-view fusion without the need for active exploration.</span>
+      </figcaption>
     </figure>
 
     <ul class="stats" aria-label="Benchmark statistics">
@@ -97,7 +100,7 @@
 
     <div class="abstract" id="abstract">
       <h2>Abstract</h2>
-      <p>While Multimodal Large Language Models (MLLMs) excel at zero-shot reasoning, their spatial capabilities are primarily evaluated through static, passive observation. In complex, human-centric environments, severe occlusions frequently obscure critical geometric evidence. Passive evaluations force models to hallucinate missing details rather than explicitly recognizing their own visual uncertainty. To bridge this gap, we introduce <b>SATE-Bench</b>, a novel interactive benchmark evaluating visual self-awareness and active exocentric view-exploration. Comprising 316 real-world scenes and 2,525 multi-turn QA pairs, SATE-Bench utilizes an Active/Passive diagnostic framework. In the Active setting, models start with a severely occluded view and must iteratively query adjacent perspectives to fully “sate” their need for definitive visual evidence, evaluated via a step-penalized reward metric to quantify exploration efficiency. Our comprehensive evaluation of state-of-the-art MLLMs reveals critical deficits: current models underestimate their spatial uncertainty, prematurely terminate exploration, and struggle significantly with fine-grained 3D geometric tasks. Furthermore, we explore eliciting visual self-awareness via Group Relative Policy Optimization (GRPO), demonstrating that while reinforcement learning successfully incentivizes active view-seeking behaviors, the continuous viewpoint-switching exposes bottlenecks in dynamic multi-view fusion. These findings indicate that scaling passive multi-view capabilities does not intrinsically yield active spatial reasoning, highlighting an urgent need for models that intelligently seek out necessary spatial views.</p>
+      <p>While Multimodal Large Language Models (MLLMs) excel at zero-shot reasoning, their spatial capabilities are primarily evaluated through static, passive observation. In complex, human-centric scenes, occlusion often hides crucial geometric evidence, and passive benchmarks force models to guess rather than recognize their own visual uncertainty. To bridge this gap, we introduce <b>SATE-Bench</b>, a novel interactive benchmark comprising 316 real-world scenes and 2,525 multi-turn QA pairs to evaluate visual self-awareness and active exocentric view-exploration. It combines a Passive multi-view control with an Active exploration setting, where models start from a severely occluded view and must iteratively query adjacent viewpoints until they gather enough evidence to fully “sate” the question, scored by a step-penalized efficiency reward. Evaluating state-of-the-art MLLMs reveals that they terminate exploration prematurely while reporting high confidence, and struggle with fine-grained 3D geometric tasks; matched-view controls further attribute the Active–Passive gap primarily to insufficient evidence acquisition. Moreover, fine-tuning with Group Relative Policy Optimization (GRPO) shows that rewarding view-seeking increases active exploration but lowers overall accuracy, as models over-explore and fail to fuse expanding multi-view contexts across turns. These findings indicate that scaling passive multi-view perception does not intrinsically yield active spatial reasoning, highlighting the need for models that know where to look, how to integrate what they see, and when to stop.</p>
     </div>
   </div>
 </section>
@@ -107,7 +110,7 @@
   <div class="container">
     <p class="eyebrow">Interactive demo</p>
     <h2>Try the Active Setting Yourself</h2>
-    <p class="lead">You start where the model starts: one view of the scene. Move around the cameras until you are confident, then answer. Every extra view lowers the reward by a factor of e<sup>−0.1</sup>. Try the scene from Figure 1 or one benchmark question for each of the ten tasks, and compare your path with the models'.</p>
+    <p class="lead">You start where the model starts: one view of the scene. Move around the cameras until you are <b>confident</b>, then answer. Every extra view lowers the reward by a factor of e<sup>−0.1</sup>. Try the scene from Figure 1 or one benchmark question for each of the ten tasks, then see whether you answered correctly and how your path compares with&nbsp;the&nbsp;models'.</p>
 
     <div class="demo-tabs" role="tablist" aria-label="Example questions" id="demo-tabs"></div>
 
@@ -116,6 +119,9 @@
         <div class="frame">
           <img id="demo-image" src="" alt="">
           <span class="frame-badge" id="demo-viewlabel"></span>
+          <button class="zoom-btn" id="demo-zoom" type="button" aria-label="Enlarge this view" aria-haspopup="dialog">
+            <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.5 15.5 21 21M10.5 7.5v6M7.5 10.5h6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            Zoom</button>
         </div>
         <div class="controls">
           <button class="move" id="move-left" type="button" aria-keyshortcuts="ArrowLeft">
@@ -135,7 +141,7 @@
         <button class="reset" id="demo-reset" type="button">↺ Restart this example</button>
       </div>
     </div>
-    <p class="hint">Tip: use the ← and → keys to move between views.</p>
+    <p class="hint">Tip: click the demo, then use the ← and → keys to move between views. Click the image or <button type="button" class="link-btn" id="hint-zoom">Zoom</button> to inspect the current view at full resolution; zooming does not count as a view.</p>
   </div>
 </section>
 
@@ -144,7 +150,7 @@
   <div class="container">
     <p class="eyebrow">Benchmark</p>
     <h2>The SATE-Bench Benchmark</h2>
-    <p class="lead">We source dense, synchronized 360° multi-view captures from ten human-centric datasets, sort the views clockwise around each scene, and annotate challenging multiple-choice questions. For the Active setting, annotators choose an initial view that genuinely requires exploration; for the Passive setting, they choose a subset of views that guarantees the question is answerable. Two independent reviewers cross-validate every item.</p>
+    <p class="lead">We source dense, synchronized 360° multi-view captures from ten human-centric datasets, sort the views clockwise around each scene, and annotate challenging multiple-choice questions.</p>
     <figure class="figure">
       <img src="static/images/pipeline.webp" width="2000" height="1126" loading="lazy" alt="Curation and evaluation pipeline: question design and data collection, annotation and quality control, active exploration, and passive observation.">
       <figcaption>Curation and evaluation pipeline. Steps 1–2: data collection and human quality control. Step 3: multi-turn Active exploration. Step 4: single-turn Passive observation.</figcaption>
@@ -174,9 +180,9 @@
       <div class="panel">
         <h3>Two diagnostic settings</h3>
         <dl class="settings">
-          <dt><span class="pill active">Active</span> 1,615 questions</dt>
+          <dt><span class="pill active">Active setting</span></dt>
           <dd>One occluded initial view. At each turn the model answers or moves to the adjacent left (X) or right (Y) view, keeping the full history. Scored by accuracy, steps, active rate and the step-penalized reward.</dd>
-          <dt><span class="pill passive">Passive</span> 910 questions</dt>
+          <dt><span class="pill passive">Passive setting</span></dt>
           <dd>A bag of annotated views that contains all the evidence. Isolates multi-view fusion from exploration.</dd>
           <dt>Sources</dt>
           <dd>M3GYM, Harmony4D, HOI-M3, MvMHAT, core4D, 4D-OR, MM-OR, Replay, EgoHumans and Ego-Exo4D.</dd>
@@ -191,38 +197,8 @@
   </div>
 </section>
 
-<!-- ============================== FINDINGS ============================== -->
-<section class="section band" id="findings">
-  <div class="container">
-    <p class="eyebrow">Findings</p>
-    <h2>Key Findings</h2>
-    <div class="cards">
-      <article class="card">
-        <p class="big">69.2 → 56.8</p>
-        <h3>Passive–Active gap</h3>
-        <p>Gemini-3.5-flash fuses static views well (69.2% Passive accuracy) but drops to 56.8% when it has to gather the views itself.</p>
-      </article>
-      <article class="card">
-        <p class="big">2.5 <small>vs.</small> 4.7</p>
-        <h3>Premature termination</h3>
-        <p>Humans explore in 88.1% of the questions and observe 4.7 views on average; the most exploratory model observes only 2.5, and models report high confidence when they stop.</p>
-      </article>
-      <article class="card">
-        <p class="big">31.9%</p>
-        <h3>Geometry breaks down</h3>
-        <p>Entity queries are handled reasonably well, but fine-grained 3D tasks such as Human-Object Interaction collapse, even for the strongest model.</p>
-      </article>
-      <article class="card">
-        <p class="big">0.2% → 72.8%</p>
-        <h3>RL elicits exploration</h3>
-        <p>GRPO turns a model that almost never explores into one that explores most of the time, but stronger exploration rewards lower Active accuracy.</p>
-      </article>
-    </div>
-  </div>
-</section>
-
 <!-- ============================== RESULTS ============================== -->
-<section class="section" id="results">
+<section class="section band" id="results">
   <div class="container">
     <p class="eyebrow">Results</p>
     <h2>Main Results</h2>
@@ -245,10 +221,12 @@
           <tr><td>GPT-5-nano</td><td class="num">55.4</td><td class="num">38.0</td><td class="num drop">−17.4</td><td class="num">1.3</td><td class="num">17.6</td></tr>
           <tr class="group"><td colspan="6"><span>Open-source models</span></td></tr>
           <tr><td>Qwen2.5-VL-3B-Instruct</td><td class="num">50.9</td><td class="num">30.4</td><td class="num drop">−20.5</td><td class="num">1.0</td><td class="num">0.2</td></tr>
-          <tr><td>LLaVA-OneVision-7B</td><td class="num">58.9</td><td class="num">36.1</td><td class="num drop">−22.8</td><td class="num">1.0</td><td class="num">0.0</td></tr>
-          <tr><td>Gemma-3-4B-it</td><td class="num">40.2</td><td class="num">31.0</td><td class="num drop">−9.2</td><td class="num">1.1</td><td class="num">3.3</td></tr>
+          <tr><td>Qwen2.5-VL-7B-Instruct</td><td class="num">54.9</td><td class="num">29.8</td><td class="num drop">−25.1</td><td class="num">1.0</td><td class="num">0.4</td></tr>
           <tr><td>Qwen3-VL-8B-Instruct</td><td class="num">55.6</td><td class="num">30.7</td><td class="num drop">−24.9</td><td class="num">1.6</td><td class="num">15.6</td></tr>
           <tr><td>Qwen3-VL-8B-Thinking</td><td class="num">57.7</td><td class="num">29.8</td><td class="num drop">−27.9</td><td class="num">1.1</td><td class="num">5.8</td></tr>
+          <tr><td>Qwen3.5-9B</td><td class="num">56.9</td><td class="num">36.7</td><td class="num drop">−20.2</td><td class="num">1.1</td><td class="num">4.1</td></tr>
+          <tr><td>Gemma-3-4B-it</td><td class="num">40.2</td><td class="num">31.0</td><td class="num drop">−9.2</td><td class="num">1.1</td><td class="num">3.3</td></tr>
+          <tr><td>LLaVA-OneVision-2-8B</td><td class="num">58.9</td><td class="num">36.1</td><td class="num drop">−22.8</td><td class="num">1.0</td><td class="num">0.0</td></tr>
         </tbody>
       </table>
     </div>
@@ -256,8 +234,314 @@
   </div>
 </section>
 
+<!-- ============================== FINDINGS ============================== -->
+<section class="section" id="findings">
+  <div class="container">
+    <p class="eyebrow">Findings</p>
+    <h2>Key Findings</h2>
+    <p class="lead">The 15 findings of the paper, grouped by the evaluation setting in which they are observed.</p>
+
+    <!-- Main evaluation: Findings 1–6 -->
+    <div class="finding-group">
+      <div class="group-head">
+        <span class="group-index">Findings 1–6</span>
+        <h3>Main evaluation: Active vs. Passive</h3>
+      </div>
+      <div class="cards three">
+        <article class="card">
+          <span class="card-no">Finding 1</span>
+          <p class="big">69.2 → 56.8</p>
+          <h3>Passive–Active gap</h3>
+          <p>Gemini-3.5-flash fuses static views well (69.2% Passive accuracy) but drops to 56.8% when it has to gather the views itself.</p>
+        </article>
+        <article class="card">
+          <span class="card-no">Finding 2</span>
+          <p class="big">2.5 <small>vs.</small> 4.7</p>
+          <h3>Premature termination</h3>
+          <p>Humans explore in 88.1% of the questions and observe 4.7 views on average; the most exploratory model observes only 2.5.</p>
+        </article>
+        <article class="card">
+          <span class="card-no">Finding 3</span>
+          <p class="big">31.9%</p>
+          <h3>Fine-grained 3D geometry is hard</h3>
+          <p>Gemini-3.5-flash handles entity queries reasonably well (68.2% on Object Existence) but falls to 31.9% on Human-Object Interaction and 32.2% on View-Specific Depth Ordering.</p>
+        </article>
+        <article class="card">
+          <span class="card-no">Finding 4</span>
+          <p class="big">2.8 h → 9.4 h</p>
+          <h3>High inference cost</h3>
+          <p>Exploring raises the total inference time of Gemini-3.5-flash from 2.8 hours (Passive) to 9.4 hours (Active), as the multi-view context grows with every step.</p>
+        </article>
+        <article class="card">
+          <span class="card-no">Finding 5</span>
+          <p class="big">0.0–15.6%</p>
+          <h3>Open-source models rarely explore</h3>
+          <p>Open-source models almost never move: their Active rates range from 0.0% to 15.6%, and their Active accuracy stays at 29.8–36.7%.</p>
+        </article>
+        <article class="card">
+          <span class="card-no">Finding 6</span>
+          <p class="big">5.8% <small>vs.</small> 15.6%</p>
+          <h3>Thinking does not help exploration</h3>
+          <p>Qwen3-VL-8B-Thinking beats its Instruct version in the Passive setting (57.7% vs. 55.6%), but in the Active setting it explores less (5.8% vs. 15.6% active rate) and takes over 20 hours.</p>
+        </article>
+      </div>
+    </div>
+
+    <!-- Diagnostic evaluations: Findings 7–12 -->
+    <div class="finding-group">
+      <div class="group-head">
+        <span class="group-index">Findings 7–12</span>
+        <h3>Diagnostic evaluations</h3>
+        <p>Five controlled variants of the evaluation isolate what limits the models: what they can see, how they may move, how the views are presented, and how confident they are.</p>
+      </div>
+      <div class="setting-grid">
+        <article class="setting-card">
+          <span class="setting-tag">Single view</span>
+          <p class="setup">Models answer from the initial occluded view only, without any exploration.</p>
+          <div class="finding">
+            <span class="card-no">Finding 7</span>
+            <p class="big">≤ 39.6%</p>
+            <h4>Scaling cannot overcome occlusion</h4>
+            <p>With only the initial view, no model exceeds 39.6% accuracy, and the compact GPT-5-mini (39.6%) even edges out GPT-5.2 (37.3%).</p>
+          </div>
+        </article>
+        <article class="setting-card span-2">
+          <span class="setting-tag">Expanded view selection</span>
+          <p class="setup">At every step, models may move one or two views to either side (±1 or ±2) instead of only to the adjacent view.</p>
+          <div class="finding-pair">
+            <div class="finding">
+              <span class="card-no">Finding 8</span>
+              <p class="big">45.4 → 45.7</p>
+              <h4>Wider moves, same accuracy</h4>
+              <p>Allowing moves of ±2 views barely changes accuracy (Gemini-2.5-flash: 45.4% → 45.7%): the bottleneck is recognizing uncertainty, not the action space.</p>
+            </div>
+            <div class="finding">
+              <span class="card-no">Finding 9</span>
+              <p class="big">35.3 → 38.0</p>
+              <h4>Marginal efficiency gains</h4>
+              <p>With ±2-view moves, the average reward of Gemini-2.5-flash rises slightly (35.3 → 38.0), as it can skip redundant intermediate views.</p>
+            </div>
+          </div>
+        </article>
+        <article class="setting-card">
+          <span class="setting-tag">Matched-view Passive</span>
+          <p class="setup">The views a model collected during Active exploration are given back to it passively, in the same order.</p>
+          <div class="finding">
+            <span class="card-no">Finding 10</span>
+            <p class="big">38.0 <small>vs.</small> 40.3</p>
+            <h4>Evidence, not format</h4>
+            <p>With the same views, Gemini-3.1-flash-lite reaches almost the same accuracy (40.3% vs. 38.0%): the gap comes from gathering too little evidence.</p>
+          </div>
+        </article>
+        <article class="setting-card">
+          <span class="setting-tag">Video input</span>
+          <p class="setup">All Passive views are given as a single video instead of separate images.</p>
+          <div class="finding">
+            <span class="card-no">Finding 11</span>
+            <p class="big">62.6 → 57.6</p>
+            <h4>Video input degrades reasoning</h4>
+            <p>Accuracy drops for Gemini-3.1-flash-lite (62.6% → 57.6%) and GPT-5-mini (64.6% → 63.7%): discontinuous camera views do not form a natural video.</p>
+          </div>
+        </article>
+        <article class="setting-card">
+          <span class="setting-tag">Confidence reporting</span>
+          <p class="setup">Models report a confidence score (0–100%) together with every action.</p>
+          <div class="finding">
+            <span class="card-no">Finding 12</span>
+            <p class="big">95.1%</p>
+            <h4>Overconfident stopping</h4>
+            <p>Gemini-3.1-flash-lite reports 95.1% confidence at its final step while answering only 37.3% correctly (GPT-5-mini: 84.7% vs. 41.4%).</p>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- GRPO: Findings 13–15 -->
+    <div class="finding-group">
+      <div class="group-head">
+        <span class="group-index">Findings 13–15</span>
+        <h3>Reinforcement learning with GRPO</h3>
+        <p>Qwen2.5-VL-3B-Instruct is fine-tuned with GRPO on 19.3K single-view samples, varying the action reward that encourages exploration from 0.05 to 1.4.</p>
+      </div>
+      <div class="cards three">
+        <article class="card">
+          <span class="card-no">Finding 13</span>
+          <p class="big">0.2% → 72.8%</p>
+          <h3>RL incentivizes exploration</h3>
+          <p>GRPO raises the active rate of Qwen2.5-VL-3B from 0.2% to 72.8% and its average number of observed views from 1.0 to 6.0.</p>
+        </article>
+        <article class="card">
+          <span class="card-no">Finding 14</span>
+          <p class="big">≈ 51%</p>
+          <h3>Passive perception stays stable</h3>
+          <p>The Passive accuracy of the base model and every GRPO-tuned model stays at about 51% (50.9–51.6%), so multi-image fusion is preserved.</p>
+        </article>
+        <article class="card">
+          <span class="card-no">Finding 15</span>
+          <p class="big">30.4 → 17.9</p>
+          <h3>Exploration–accuracy trade-off</h3>
+          <p>Stronger action rewards lower Active accuracy from 30.4% to 17.9%: the model moves more without learning when to stop or how to fuse the views.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== FAILURE CASES ============================== -->
+<section class="section band" id="failures">
+  <div class="container">
+    <p class="eyebrow">Failure cases</p>
+    <h2>Where Do Models Fail?</h2>
+    <p class="lead">For most models, over 70% of Active errors happen at the start view, without a single move. Models that do explore stop before reaching the decisive view or fail to combine evidence across views. In the Passive setting, models under-count, accept partial attribute matches and confuse frames of reference.</p>
+
+    <div class="case-tabs" role="tablist" aria-label="Failure cases">
+      <div class="case-row">
+        <span class="case-group">Active</span>
+        <button type="button" class="demo-tab case-tab" role="tab" id="tab-A1" aria-controls="case-A1" aria-selected="true">A1 · Dataset prior</button>
+        <button type="button" class="demo-tab case-tab" role="tab" id="tab-A2" aria-controls="case-A2" aria-selected="false">A2 · Assumed absence</button>
+        <button type="button" class="demo-tab case-tab" role="tab" id="tab-A3" aria-controls="case-A3" aria-selected="false">A3 · Abstains early</button>
+        <button type="button" class="demo-tab case-tab" role="tab" id="tab-A4" aria-controls="case-A4" aria-selected="false">A4 · Wrong direction</button>
+        <button type="button" class="demo-tab case-tab" role="tab" id="tab-A5" aria-controls="case-A5" aria-selected="false">A5 · Reflection miscount</button>
+      </div>
+      <div class="case-row">
+        <span class="case-group">Passive</span>
+        <button type="button" class="demo-tab case-tab" role="tab" id="tab-P1" aria-controls="case-P1" aria-selected="false">P1 · Hallucinated contact</button>
+        <button type="button" class="demo-tab case-tab" role="tab" id="tab-P2" aria-controls="case-P2" aria-selected="false">P2 · Wrong frame of reference</button>
+        <button type="button" class="demo-tab case-tab" role="tab" id="tab-P3" aria-controls="case-P3" aria-selected="false">P3 · Partial match</button>
+        <button type="button" class="demo-tab case-tab" role="tab" id="tab-P4" aria-controls="case-P4" aria-selected="false">P4 · Merged instances</button>
+      </div>
+    </div>
+
+    <article class="case" id="case-A1" role="tabpanel" aria-labelledby="tab-A1">
+      <button type="button" class="case-zoom" data-label="Case A1 · Ego-Exo4D · Human Counting" aria-label="Enlarge the views of case A1">
+        <img src="static/images/failures/A1.jpg" width="2014" height="320" loading="lazy" alt="Four views of an Ego-Exo4D scene; a second person at a desk is visible only in views 3 and 4.">
+      </button>
+      <div class="case-body">
+        <p class="case-meta"><span class="pill active">Active</span>Ego-Exo4D · Human Counting · 4 views · start V2</p>
+        <h3>Premature stop driven by a dataset prior</h3>
+        <p class="case-q"><b>Q:</b> How many unique human individuals are present in the entire scene across all given views? <b>Answer:</b> 2</p>
+        <blockquote class="case-quote"><b>Gemini-3.5-flash (V2):</b> “Typically, these scenarios focus on a single participant […] exploring other views seems unnecessary.”</blockquote>
+        <p>A second person, seated at a desk in the far corner, is visible only from V3 and V4. The model replaces visual verification with a prior about the source dataset; a single move to V3 would reveal the second person.</p>
+      </div>
+    </article>
+
+    <article class="case" id="case-A2" role="tabpanel" aria-labelledby="tab-A2" hidden>
+      <button type="button" class="case-zoom" data-label="Case A2 · core4D · Object Existence" aria-label="Enlarge the views of case A2">
+        <img src="static/images/failures/A2.jpg" width="2014" height="320" loading="lazy" alt="Four views of a core4D scene; the red fuel container is hidden in the start view but visible in views 1 and 3.">
+      </button>
+      <div class="case-body">
+        <p class="case-meta"><span class="pill active">Active</span>core4D · Object Existence · 4 views · start V4</p>
+        <h3>Absence of evidence taken as evidence of absence</h3>
+        <p class="case-q"><b>Q:</b> Is there a red plastic fuel container located on the floor between the two participants and the central cardboard boxes? <b>Answer:</b> Yes</p>
+        <blockquote class="case-quote"><b>Gemini-3.5-flash (V4):</b> “I am sure, if it was there, I would see it. […] that space is completely visible and empty.”</blockquote>
+        <p>From V4 the container is hidden behind the tall box and the participants; in V1 and V3 it is clearly visible. The model wrongly judges the region to be fully observed, which is exactly the self-assessment the Active setting probes.</p>
+      </div>
+    </article>
+
+    <article class="case" id="case-A3" role="tabpanel" aria-labelledby="tab-A3" hidden>
+      <button type="button" class="case-zoom" data-label="Case A3 · Ego-Exo4D · Relative Distance to Object" aria-label="Enlarge the views of case A3">
+        <img src="static/images/failures/A3.jpg" width="2014" height="320" loading="lazy" alt="Four views of an Ego-Exo4D workshop; both persons in the question are outside the start view.">
+      </button>
+      <div class="case-body">
+        <p class="case-meta"><span class="pill active">Active</span>Ego-Exo4D · Relative Distance to Object · 4 views · start V1</p>
+        <h3>Abstaining instead of exploring</h3>
+        <p class="case-q"><b>Q:</b> Which person is standing closest to the man wearing the red shirt behind the wooden counter? <b>Answer:</b> The person in the lavender shirt near the background racks</p>
+        <blockquote class="case-quote"><b>Gemini-3.5-flash (V1):</b> “If there's no red-shirted guy anywhere, then C is the answer. […] No space for someone to be behind it!”</blockquote>
+        <p>Both persons are outside V1 (red shirt in V4, lavender shirt in V3). The model notices that the referent is missing but declares the question unanswerable instead of exploring, whereas Gemini-2.5-flash explores from the same observation. Abstaining at the start view causes 25–57% of the errors of the weaker models.</p>
+      </div>
+    </article>
+
+    <article class="case" id="case-A4" role="tabpanel" aria-labelledby="tab-A4" hidden>
+      <button type="button" class="case-zoom" data-label="Case A4 · core4D · Object Existence" aria-label="Enlarge the views of case A4">
+        <img src="static/images/failures/A4.jpg" width="2014" height="320" loading="lazy" alt="Four views of a core4D scene; the open equipment case and the glass door appear together only in view 3.">
+      </button>
+      <div class="case-body">
+        <p class="case-meta"><span class="pill active">Active</span>core4D · Object Existence · 4 views · start V4</p>
+        <h3>Wrong direction, and evidence not linked across views</h3>
+        <p class="case-q"><b>Q:</b> Is there an open black equipment case on the floor near the glass door? <b>Answer:</b> Yes</p>
+        <blockquote class="case-quote"><b>Gemini-3.5-flash:</b> (V1) “there's this black equipment case – it's open […] Where is the glass door?” (V2) “No black case. Just cables.”</blockquote>
+        <p>The case is visible in V1 but the door is not; both appear together only in V3, one step in the opposite direction. The model finds the object, keeps moving away from the view that relates it to the landmark, and forgets the earlier sighting at V2. Partial exploration accounts for 65% of Gemini-3.5-flash's and 55% of GPT-5.2's errors.</p>
+      </div>
+    </article>
+
+    <article class="case" id="case-A5" role="tabpanel" aria-labelledby="tab-A5" hidden>
+      <button type="button" class="case-zoom" data-label="Case A5 · M3GYM · Human Counting" aria-label="Enlarge the views of case A5">
+        <img src="static/images/failures/A5.jpg" width="1766" height="578" loading="lazy" alt="Eight views of a gym with a mirror wall that duplicates most participants.">
+      </button>
+      <div class="case-body">
+        <p class="case-meta"><span class="pill active">Active</span>M3GYM · Human Counting · 8 views · start V1</p>
+        <h3>Same evidence, different conclusions</h3>
+        <p class="case-q"><b>Q:</b> How many unique real people are present in the gym space from all given views, including those partially visible or in reflections? <b>Answer:</b> 7</p>
+        <blockquote class="case-quote"><b>Gemini-3.5-flash (V2):</b> “this ‘new’ person (in the reflection) has black shorts […] I will now identify as Person 8.”<br><b>Gemini-2.5-flash (V2):</b> “the two ‘reflection-only’ figures from View 1 are directly visible in View 2, meaning those are not unique individuals.”</blockquote>
+        <p>Both Gemini models observe the same two views. The mirror wall duplicates most participants; Gemini-3.5-flash re-identifies people by a single clothing cue and counts a reflection as an extra person, while Gemini-2.5-flash matches it to a directly visible person. Here the bottleneck is cross-view integration, not exploration.</p>
+      </div>
+    </article>
+
+    <article class="case" id="case-P1" role="tabpanel" aria-labelledby="tab-P1" hidden>
+      <button type="button" class="case-zoom" data-label="Case P1 · Ego-Exo4D · Human-Object Interaction" aria-label="Enlarge the views of case P1">
+        <img src="static/images/failures/P1.jpg" width="2100" height="271" loading="lazy" alt="Five views of a soccer player next to a ball; the close-ups show both feet on the turf beside the ball.">
+      </button>
+      <div class="case-body">
+        <p class="case-meta"><span class="pill passive">Passive</span>Ego-Exo4D · Human-Object Interaction · 5 input views</p>
+        <h3>Hallucinated contact</h3>
+        <p class="case-q"><b>Q:</b> Regarding the interaction between the player's right foot and the soccer ball, which description is most accurate based on the synchronized views? <b>Answer:</b> No contact; the foot is hovering just beside the ball</p>
+        <blockquote class="case-quote"><b>Gemini-3.5-flash:</b> “Image 1: Right foot is on the ball. […] Image 5: Right foot is on the ball. […] D &amp; E) Not likely. There is contact.”</blockquote>
+        <p>The two close-ups (Img 1 and Img 4) show both feet on the turf beside the ball. The model asserts a stereotyped pose first and then “confirms” it in every view, including distant ones where the foot covers only a few pixels.</p>
+      </div>
+    </article>
+
+    <article class="case" id="case-P2" role="tabpanel" aria-labelledby="tab-P2" hidden>
+      <button type="button" class="case-zoom" data-label="Case P2 · Harmony4D · View-Specific Direction" aria-label="Enlarge the views of case P2">
+        <img src="static/images/failures/P2.jpg" width="1166" height="367" loading="lazy" alt="Two views of two wrestlers; the observer in the blue T-shirt faces the camera.">
+      </button>
+      <div class="case-body">
+        <p class="case-meta"><span class="pill passive">Passive</span>Harmony4D · View-Specific Direction · 2 input views</p>
+        <h3>Answering in the camera's frame instead of the observer's</h3>
+        <p class="case-q"><b>Q:</b> From the perspective of the man sitting in the blue T-shirt, what is the 3D spatial relationship of the standing wrestler relative to the grounded wrestler's torso? <b>Answer:</b> In front, left, above</p>
+        <blockquote class="case-quote"><b>Gemini-2.5-flash:</b> “From the observer's perspective, the grounded wrestler's torso is on the left side of the scene, and the standing wrestler is to the right.”</blockquote>
+        <p>The observer (yellow box) faces the camera, so his frame is rotated by about 180° relative to V1. The model's answer is correct in the camera's frame; for the observer, the depth and lateral components flip. The model claims to take the observer's perspective but reads left/right and depth directly off the image.</p>
+      </div>
+    </article>
+
+    <article class="case" id="case-P3" role="tabpanel" aria-labelledby="tab-P3" hidden>
+      <button type="button" class="case-zoom" data-label="Case P3 · Replay · Human Existence" aria-label="Enlarge the views of case P3">
+        <img src="static/images/failures/P3.jpg" width="1508" height="320" loading="lazy" alt="Three views of two marimba players with two men standing behind them.">
+      </button>
+      <div class="case-body">
+        <p class="case-meta"><span class="pill passive">Passive</span>Replay · Human Existence · 3 input views</p>
+        <h3>Accepting a partial attribute match</h3>
+        <p class="case-q"><b>Q:</b> Is there a man wearing a grey hooded sweatshirt and a black baseball cap, looking to his right and standing directly behind the two marimba players? <b>Answer:</b> No</p>
+        <blockquote class="case-quote"><b>Gemini-3.5-flash:</b> “His hoodie's possibly dark grey but looks like black in Image 2. […] this seems to be the closest match.”</blockquote>
+        <p>The man behind the players (Img 3) wears a black cap but a dark navy sweatshirt; a man in grey without a cap stands next to him. The question mixes attributes of two people. The model notices the mismatch but accepts the closest match instead of rejecting it, the typical form of the 76% false-positive existence errors.</p>
+      </div>
+    </article>
+
+    <article class="case" id="case-P4" role="tabpanel" aria-labelledby="tab-P4" hidden>
+      <button type="button" class="case-zoom" data-label="Case P4 · core4D · Object Counting" aria-label="Enlarge the views of case P4">
+        <img src="static/images/failures/P4.jpg" width="1508" height="320" loading="lazy" alt="Two input views, each showing a different white robotic arm on adjacent workbenches.">
+      </button>
+      <div class="case-body">
+        <p class="case-meta"><span class="pill passive">Passive</span>core4D · Object Counting · 2 input views</p>
+        <h3>Merging two instances across views</h3>
+        <p class="case-q"><b>Q:</b> How many white robotic arms are installed on the workbenches in the space? <b>Answer:</b> 2</p>
+        <blockquote class="case-quote"><b>Gemini-3.5-flash:</b> “The positioning suggests it could be the same workbench. […] Same workbench. Same arm.”</blockquote>
+        <p>The room has two arms on adjacent workbenches; Img 1 and Img 2 each show a different one (V4, not given as input, shows both). The model identifies the real question, whether the two sightings are the same instance, but decides it from generic context that fits both benches. Such over-merging explains why under-counts are twice as frequent as over-counts.</p>
+      </div>
+    </article>
+
+    <p class="case-legend">
+      <span><i class="sw sw-start"></i>start view</span>
+      <span><i class="sw sw-visit"></i>visited (numbered in visit order) or given as input</span>
+      <span><i class="sw sw-none"></i>not visited or not given</span>
+      <span><i class="sw sw-evid"></i>decisive evidence</span>
+      <span><i class="sw sw-ref"></i>reference person</span>
+      <span>Click the views to enlarge them.</span>
+    </p>
+  </div>
+</section>
+
 <!-- ============================== GRPO ============================== -->
-<section class="section band" id="grpo">
+<section class="section" id="grpo">
   <div class="container">
     <p class="eyebrow">Training</p>
     <h2>Can MLLMs Learn to Explore?</h2>
@@ -270,18 +554,10 @@
 </section>
 
 <!-- ============================== BIBTEX ============================== -->
-<section class="section" id="bibtex">
+<section class="section band" id="bibtex">
   <div class="container narrow">
     <h2>BibTeX</h2>
-    <div class="bibtex">
-      <button type="button" class="copy" id="copy-bibtex">Copy</button>
-<pre id="bibtex-text">@inproceedings{satebench2027,
-  title     = {Humans in Space: Can MLLMs Construct Human-Centric Spatial Understanding via Active Exocentric Exploration?},
-  author    = {Guo, Tianchen and Zhang, Tengyue and Liu, Chen and Chen, Ling and Yu, Xin},
-  booktitle = {Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
-  year      = {2027}
-}</pre>
-    </div>
+    <p class="bibtex-soon">The BibTeX entry will be added here once the paper is on arXiv.</p>
 
     <h2 class="ack-title" id="acknowledgements">Acknowledgements</h2>
     <p class="ack">SATE-Bench is built on
@@ -295,7 +571,13 @@
       <a href="https://github.com/facebookresearch/replay_dataset">Replay</a>,
       <a href="https://rawalkhirodkar.github.io/egohumans/">EgoHumans</a> and
       <a href="https://ego-exo4d-data.org/">Ego-Exo4D</a>.
-      We thank their authors for making the data available. Images shown on this page come from these datasets and remain subject to their original licenses.</p>
+      We thank their authors for making the data available.</p>
+
+    <h2 class="ack-title" id="license">License</h2>
+    <p class="ack">The code is released under the <a href="https://github.com/gtc-gh/SATE-Bench/blob/master/LICENSE">Apache License 2.0</a>.
+      The SATE-Bench annotations and data (questions, options, answers, view selections and released frames) are released under
+      <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a> and must be used for non-commercial purposes only.
+      Frames from the source datasets, including the images shown on this page, remain subject to the original licenses of those datasets.</p>
   </div>
 </section>
 
@@ -309,7 +591,29 @@
   </div>
 </footer>
 
+<!-- Full-resolution viewer for the current demo view -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged view" hidden>
+  <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close">✕</button>
+  <div class="lightbox-stage" id="lightbox-stage">
+    <img id="lightbox-image" src="" alt="" draggable="false">
+  </div>
+  <div class="lightbox-bar">
+    <span class="lightbox-nav">
+      <button type="button" class="lightbox-move" data-move="X" aria-keyshortcuts="ArrowLeft">← Move left</button>
+      <span class="lightbox-label" id="lightbox-label"></span>
+      <button type="button" class="lightbox-move" data-move="Y" aria-keyshortcuts="ArrowRight">Move right →</button>
+    </span>
+    <span class="lightbox-zoom">
+      <button type="button" data-zoom="out" aria-label="Zoom out">−</button>
+      <span class="lightbox-scale" id="lightbox-scale" aria-live="polite">100%</span>
+      <button type="button" data-zoom="in" aria-label="Zoom in">+</button>
+      <button type="button" data-zoom="fit">Fit</button>
+    </span>
+  </div>
+  <p class="lightbox-hint" id="lightbox-hint"></p>
+</div>
+
 <script src="static/js/demo_data.js"></script>
-<script src="static/js/main.js"></script>
+<script src="static/js/main.js?v=20261026e"></script>
 </body>
 </html>
